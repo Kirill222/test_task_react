@@ -31,6 +31,13 @@ export const  EmployeesGrid = ({employees}) => {
       setFilteredEmployees(filtered)
     }
 
+    const filteredByPosition = (e) => {
+      const filtered = sortedEmployees.filter(emp => {
+        return emp.position.includes(e.target.value)
+      })      
+      setFilteredEmployees(filtered)
+    }
+
     console.log("hey", employees);
     return (
 
@@ -46,7 +53,7 @@ export const  EmployeesGrid = ({employees}) => {
                   </TableCell>
                   <TableCell align="center">
                     Position
-                    <TextField id="outlined-basic" label="Filter by position" variant="outlined" />
+                    <TextField id="outlined-basic" label="Filter by position" variant="outlined" onChange={filteredByPosition} />
                   </TableCell>
                   <TableCell align="center">
                     Active contracts
