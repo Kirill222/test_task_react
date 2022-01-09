@@ -67,7 +67,7 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell align="center">
-                    <TextField id="outlined-basic" label="Filter by name" variant="outlined" onChange={filteredByName} />
+                    <TextField id="outlined-basic" label="Search by name" variant="outlined" onChange={filteredByName} />
                   </TableCell>
                   <TableCell align="center">
                   <Autocomplete

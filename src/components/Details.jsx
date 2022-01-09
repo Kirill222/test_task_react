@@ -91,7 +91,10 @@ export const Details = () => {
                                         if(new Date(a.from) < new Date(b.from)) { return 1; }
                                         return 0;
                                       }).map(ac => {
-                                    return <p>{`${ac.contractType} - from ${ac.from} to ${ac.to ? ac.to : '...'}`}</p>
+                                            let fromDate = new Date(ac.from)
+                                            let toDate = new Date(ac.to)
+
+                                        return <p>{`${ac.contractType} - from ${`${fromDate.getDate()}.${fromDate.getMonth()}.${fromDate.getFullYear()}`} to ${ac.to ? `${toDate.getDate()}.${toDate.getMonth()}.${toDate.getFullYear()}` : '...'}`}</p>
                                 })
                             }
                     </div>
