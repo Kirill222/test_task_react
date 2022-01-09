@@ -9,31 +9,7 @@ export const Details = () => {
 
     const [data, setData] = useState([])
     const [employees, setEmployees] = useState([])
-    // const [certainEmployee, setCertainEmployee] = useState({
-    //     id: 19,
-    //     name: "Lawrence Tracy",
-    //     position: "Vedúci zmeny",
-    //     activeContracts: [
-    //         {
-    //             id: 11,
-    //             contractType: "Trvalý pracovný pomer - skrátený",
-    //             from: "2020-01-01",
-    //             to: "2020-06-30"
-    //         },
-    //         {
-    //             id: 41,
-    //             contractType: "Trvalý pracovný pomer - skrátený",
-    //             from: "2020-07-01",
-    //             to: "2021-06-30"
-    //         },
-    //         {
-    //             id: 42,
-    //             contractType: "Trvalý pracovný pomer",
-    //             from: "2021-12-15",
-    //             to: null
-    //         }
-    //     ]
-    // })
+    
     const [sortedContracts, setSortedContracts] = useState([])
 
     let { employeeId } = useParams()
@@ -134,7 +110,11 @@ export const Details = () => {
                     <h3>Contracts:</h3>
                     <div>
                             {
-                                employees[0] && employees[0].activeContracts.map(ac => {
+                                employees[0] && employees[0].activeContracts.sort((a, b) => {
+                                        if(new Date(a.from) < new Date(b.from)) { return -1; }
+                                        if(new Date(a.from) > new Date(b.from)) { return 1; }
+                                        return 0;
+                                      }).map(ac => {
                                     return <p>{`${ac.contractType} - from ${ac.from} to ${ac.to ? ac.to : '...'}`}</p>
                                 })
                             }
