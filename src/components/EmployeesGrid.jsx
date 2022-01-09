@@ -25,17 +25,17 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
 
   
 
-    //Dates states
-    const [value, setValue] = useState(new Date())
-    //Handle change for DesktopDatePicker component
-    const handleChange = (newValue) => {
-      setValue(newValue) 
-      console.log(newValue);
+    // //Dates states
+    // const [value, setValue] = useState(new Date())
+    // //Handle change for DesktopDatePicker component
+    // const handleChange = (newValue) => {
+    //   setValue(newValue) 
+    //   console.log(newValue);
       
-    }
-    const searchByDate = () => {
-      console.log(value);
-    }
+    // }
+    // const searchByDate = () => {
+    //   console.log(value);
+    // }
 
     const sortedEmployees = employees.sort((a, b) => {
       if(a.name < b.name) { return -1; }
@@ -50,7 +50,7 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
 
     const filteredByName = (e) => {
       const filtered = sortedEmployees.filter(emp => {
-        return emp.name.includes(e.target.value)
+        return emp.name.toLowerCase().includes(e.target.value.toLowerCase())
       })      
       setFilteredEmployees(filtered)
     }
