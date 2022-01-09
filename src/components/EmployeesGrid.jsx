@@ -29,7 +29,12 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
     const [value, setValue] = useState(new Date())
     //Handle change for DesktopDatePicker component
     const handleChange = (newValue) => {
-      setValue(newValue)      
+      setValue(newValue) 
+      console.log(newValue);
+      
+    }
+    const searchByDate = () => {
+      console.log(value);
     }
 
     const sortedEmployees = employees.sort((a, b) => {
@@ -54,6 +59,32 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
       const filtered = sortedEmployees.filter(emp => {
         return emp.position.includes(e.target.innerHTML)
       })      
+      setFilteredEmployees(filtered)
+    }
+
+    const filteredByContract = (e) => {
+      const filtered = sortedEmployees.filter(emp => {
+        console.log(emp);
+        if(e.target.innerHTML === 'all') {
+          return emp
+        }
+        if(e.target.innerHTML === 'active') {
+          const contains = emp.activeContracts.filter(ac => {
+            return ac.to === null
+          })
+          if(contains.length > 0) {
+            return emp
+          }
+        }
+        if(e.target.innerHTML === 'inactive') {
+          const contains = emp.activeContracts.filter(ac => {
+            return ac.to === null
+          })
+          if(contains.length === 0) {
+            return emp
+          }
+        }
+      })
       setFilteredEmployees(filtered)
     }
 
@@ -91,16 +122,40 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
                   />
                   </TableCell>
                   <TableCell align="center">
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DesktopDatePicker
                         label="Date desktop"
                         inputFormat="yyyy-MM-dd"
                         mask="____-__-__"
                         value={value}
                         onChange={handleChange}
+                        onKeyPress={(e) => e.key === 'enter' && searchByDate()}
                         renderInput={(params) => <TextField {...params} />}
                       />
-                    </LocalizationProvider>
+                    </LocalizationProvider> */}
+
+                    <Autocomplete
+                      onChange={filteredByContract}
+                      freeSolo
+                      id="free-solo-2-demo"
+                      sx={{ minWidth: '200px'}}
+                      disableClearable
+                      options={['all', 'active', 'inactive']}
+                      // defaultValue="all"
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Filter by contract"
+                          onChange={filteredByContract}
+                          InputProps={{
+                            ...params.InputProps,
+                            type: 'search',
+                          }}
+                        />
+                      )}
+                  />
+
+
                   </TableCell>                
                 </TableRow>
               </TableHead>
@@ -130,71 +185,7 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
             </Table>
           </TableContainer>
 
-                  {/* Bootstrap version */}
-            {/* <table class="table">
-                <thead>
-                    <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">
-                      <TextField id="outlined-basic" label="Filter by name" variant="outlined" onChange={filteredByName} />
-                    </th>
-                    <th scope="col">
-                        <Autocomplete
-                        onChange={filteredByPosition}
-                        freeSolo
-                        id="free-solo-2-demo"
-                        sx={{ minWidth: '200px'}}
-                        disableClearable
-                        options={positions}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Filter by position"
-                            onChange={filteredByPosition}
-                            InputProps={{
-                              ...params.InputProps,
-                              type: 'search',
-                            }}
-                          />
-                        )}
-                      />
-                    </th>
-                    <th scope="col">
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DesktopDatePicker
-                        label="Date desktop"
-                        inputFormat="yyyy-MM-dd"
-                        mask="____-__-__"
-                        value={value}
-                        onChange={handleChange}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                    </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    {
-                      filteredEmployees.map(e => {
-                        return (
-                            <tr>
-                              <th scope="row">{e.id}</th>
-                              <td>
-                                <Link to={`/details/${e.id}`}>
-                                  {e.name}
-                                </Link>
-                              </td>
-                              <td>{e.position}</td>
-                              <td>
-                                <ActiveContracts contracts={e.activeContracts}/>
-                              </td>
-                            </tr>   
-                        )
-                      })
-                    }                         
-                </tbody>
-            </table>             */}
+             
         </>
     )
 }
