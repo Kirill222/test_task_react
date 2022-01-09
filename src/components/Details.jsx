@@ -1,8 +1,7 @@
 import {useEffect, useState} from 'react'
 import axios from "axios"
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import './Details.css'
-const _ = require('lodash')
 
 export const Details = () => {
 
@@ -13,6 +12,7 @@ export const Details = () => {
     const [sortedContracts, setSortedContracts] = useState([])
 
     let { employeeId } = useParams()
+    let navigate = useNavigate()
     console.log(employeeId);
     
     useEffect(() => {
@@ -64,42 +64,18 @@ export const Details = () => {
       console.log(employees);      
 
       
-    //   useEffect(()=> {
-    //     const emp = employees.filter(e => {
-    //         return e.id === parseInt(employeeId)
-    //     })
-    //     console.log(emp[0]);
-    //     setCertainEmployee({
-    //         ...emp[0],                 
-    //     })        
-        
-              
-    //   }, [employees])
-    //   console.log(certainEmployee.activeContracts)
-      
-      //sort contracts by start date
-   
-
-    //   const sortedContractsArray = certainEmployee.activeContracts.sort((a, b) => {
-    //     if(new Date(a.from) < new Date(b.from)) { return -1; }
-    //     if(new Date(a.from) > new Date(b.from)) { return 1; }
-    //     return 0;
-    //   })
-    //   setSortedContracts(sortedContractsArray)
-
-    //   useEffect(() => {
-    //       const sortedContractsArray = certainEmployee.activeContracts.sort((a, b) => {
-    //         if(new Date(a.from) < new Date(b.from)) { return -1; }
-    //         if(new Date(a.from) > new Date(b.from)) { return 1; }
-    //         return 0;
-    //       })
-    //       setSortedContracts(sortedContractsArray)
-    //   }, [certainEmployee])
+    const back = () => {
+        navigate('/')
+    }
 
 
     return (
         <div className="details">
-            <h1>Details</h1>
+            <div className="details-header">
+                <h1>Details</h1> 
+                <button className="btn" onClick={back}>Back</button>
+            </div>
+            
             <div className="info">
                 <div className="info-block">
                     <h3>General information:</h3>
@@ -111,8 +87,8 @@ export const Details = () => {
                     <div>
                             {
                                 employees[0] && employees[0].activeContracts.sort((a, b) => {
-                                        if(new Date(a.from) < new Date(b.from)) { return -1; }
-                                        if(new Date(a.from) > new Date(b.from)) { return 1; }
+                                        if(new Date(a.from) > new Date(b.from)) { return -1; }
+                                        if(new Date(a.from) < new Date(b.from)) { return 1; }
                                         return 0;
                                       }).map(ac => {
                                     return <p>{`${ac.contractType} - from ${ac.from} to ${ac.to ? ac.to : '...'}`}</p>
