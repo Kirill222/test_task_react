@@ -7,9 +7,9 @@ export const ActiveContracts = ({contracts}) => {
             contracts.map(c => {
                 return (
                     <div className="active-contract" key={Math.random()}>
-                        <div className="type">{c.contractType}</div>
+                        {/* <div className="type">{c.contractType}</div> */}
                         <div className="duration">
-                            <p>{c.from} - {c.to ? c.to : '...'}</p>
+                            <p>{`From ${c.from}`} - {c.to ? `To ${c.to}` : '...'}</p>
                         </div>
                     </div>
                 )

@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import { Link } from "react-router-dom"
-//Table
+
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -9,6 +9,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
+import Button from '@mui/material/Button'
 //Datepicker
 import DesktopDatePicker from '@mui/lab/DesktopDatePicker'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
@@ -22,20 +23,10 @@ import { Filter } from "../components/Filter"
 
 
 export const  EmployeesGrid = ({employees, positions, contracts}) => {
+    
 
-  
-
-    // //Dates states
-    // const [value, setValue] = useState(new Date())
-    // //Handle change for DesktopDatePicker component
-    // const handleChange = (newValue) => {
-    //   setValue(newValue) 
-    //   console.log(newValue);
-      
-    // }
-    // const searchByDate = () => {
-    //   console.log(value);
-    // }
+    const [isFiltering, setIsFiltering] = useState(false)
+    
 
     const sortedEmployees = employees.sort((a, b) => {
       if(a.name < b.name) { return -1; }
@@ -56,13 +47,17 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
     }
 
     const filteredByPosition = (e) => {
+      setIsFiltering(true)
       const filtered = sortedEmployees.filter(emp => {
         return emp.position.includes(e.target.innerHTML)
       })      
       setFilteredEmployees(filtered)
+      setIsFiltering(false)
     }
 
     const filteredByContract = (e) => {
+
+      setIsFiltering(true)
       const filtered = sortedEmployees.filter(emp => {
         console.log(emp);
         if(e.target.innerHTML === 'all') {
@@ -86,7 +81,10 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
         }
       })
       setFilteredEmployees(filtered)
+      setIsFiltering(false)
     }
+
+    console.log(filteredEmployees);
 
     return (
 
@@ -101,6 +99,7 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
                     <TextField id="outlined-basic" label="Search by name" variant="outlined" onChange={filteredByName} />
                   </TableCell>
                   <TableCell align="center">
+                  <div style={{display: 'flex'}}>
                   <Autocomplete
                     onChange={filteredByPosition}
                     freeSolo
@@ -120,40 +119,33 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
                       />
                     )}
                   />
+                  {isFiltering && <Button variant="contained">Stop filtering</Button>}
+                  </div>
                   </TableCell>
-                  <TableCell align="center">
-                    {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DesktopDatePicker
-                        label="Date desktop"
-                        inputFormat="yyyy-MM-dd"
-                        mask="____-__-__"
-                        value={value}
-                        onChange={handleChange}
-                        onKeyPress={(e) => e.key === 'enter' && searchByDate()}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider> */}
-
-                    <Autocomplete
-                      onChange={filteredByContract}
-                      freeSolo
-                      id="free-solo-2-demo"
-                      sx={{ minWidth: '200px'}}
-                      disableClearable
-                      options={['all', 'active', 'inactive']}
-                      // defaultValue="all"
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Filter by contract"
-                          onChange={filteredByContract}
-                          InputProps={{
-                            ...params.InputProps,
-                            type: 'search',
-                          }}
-                        />
-                      )}
-                  />
+                  <TableCell align="center">                    
+                    <div style={{display: 'flex'}}>
+                      <Autocomplete
+                        onChange={filteredByContract}
+                        freeSolo
+                        id="free-solo-2-demo"
+                        sx={{ minWidth: '200px'}}
+                        disableClearable
+                        options={['all', 'active', 'inactive']}
+                        // defaultValue="all"
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            label="Filter by contract"
+                            onChange={filteredByContract}
+                            InputProps={{
+                              ...params.InputProps,
+                              type: 'search',
+                            }}
+                          />
+                        )}
+                    />
+                    {isFiltering && <Button variant="contained" sx={{padding: '5px', fontSize: '10px'}}>Stop filtering</Button>}
+                  </div>
 
 
                   </TableCell>                
@@ -161,7 +153,7 @@ export const  EmployeesGrid = ({employees, positions, contracts}) => {
               </TableHead>
               <TableBody>
                 {
-                  filteredEmployees.map(e => {
+                 filteredEmployees.map(e => {
                     return (
                         <TableRow
                           key={e.id}

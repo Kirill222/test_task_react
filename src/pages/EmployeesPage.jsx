@@ -75,6 +75,13 @@ export const EmployeesPage = () => {
     return (
         <div className="employees-page">
             <h1>Employees</h1>
+            <span style={{fontSize: '10px'}}>Note: As it was not completely clear what contracts should be considered as "active", 
+                                            the implementation of filtering the contracts (all/active/inactive) was built based on the following logic:
+                                            the contracts with open date were considered to be active. 
+                                            So if the person does not have a contract with an open date - his contracts were considered to be inactive.
+                                            If the person has at least one contract with open date - this person is displaied in the list, when filter setup is "active"
+
+                                                </span>
             <EmployeesGrid employees={employees} positions={positions} contracts={contractTypes} />
         </div>
     )
