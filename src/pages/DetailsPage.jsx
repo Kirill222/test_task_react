@@ -1,8 +1,9 @@
+import {Details} from '../components/Details'
 
 export const DetailsPage = () => {
     return (
         <div>
-            <h1>Details</h1>
+            <Details />
         </div>
     )
 }

@@ -1,0 +1,7 @@
+.employees-grid {
+    width: 70%;
+    margin-left: auto;
+    text-align: left;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}

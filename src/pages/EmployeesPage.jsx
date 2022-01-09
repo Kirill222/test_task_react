@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
 import {EmployeesGrid} from '../components/EmployeesGrid'
+import './DetailsPage.css'
 
 export const EmployeesPage = () => {
 
     const [data, setData] = useState([])
     const [employees, setEmployees] = useState([])
+    const [positions, setPositions] = useState([])
+    const [contractTypes, setContractTypes] = useState([])   
 
     useEffect(() => {
         const fetchData = async () => {
@@ -14,9 +17,8 @@ export const EmployeesPage = () => {
             )      
             setData(result.data)
             
-            
+            //create an employee object with relevant information
             const newEmployees = result.data.employees.map(e => {
-
                 //filter the position object of the employee
                 const filterPosition = result.data.positions.filter(p => {
                     if (p.id === e.positionId) {
@@ -44,19 +46,36 @@ export const EmployeesPage = () => {
                 }
             })
             setEmployees(newEmployees)
-
-
+            //positions array
+            console.log(result.data)
+            const positionsArray = result.data.positions.map(p => {                
+                return p.name
+            })
+            const sortedPositionsArray = positionsArray.sort((a, b) => {
+                if(a < b) { return -1; }
+                if(a > b) { return 1; }
+                return 0;
+              })            
+            setPositions(positionsArray)
+            //contract types array of positions
+            const contractTypesArray = result.data.contractTypes.map(ct => {                
+                return ct.name
+            })
+            const sortedContractTypesArray = contractTypesArray.sort((a, b) => {
+                if(a < b) { return -1; }
+                if(a > b) { return 1; }
+                return 0;
+              })  
+            setContractTypes(sortedContractTypesArray) 
           };      
           fetchData()
-      }, [])      
-
-      console.log(data)
-      console.log(employees)  
+      }, []) 
+      
 
     return (
-        <div>
+        <div className="employees-page">
             <h1>Employees</h1>
-            <EmployeesGrid employees={employees} />
+            <EmployeesGrid employees={employees} positions={positions} contracts={contractTypes} />
         </div>
     )
 }
